@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="assets/img/favicon.png">
+    <title>croppic</title>
+    <!-- Bootstrap core CSS -->
+    <link href="assets/css/bootstrap.css" rel="stylesheet">
+    <link href="assets/css/main.css" rel="stylesheet">
+    <link href='assets/fonts/font1.css' rel='stylesheet' type='text/css'>
+    <link href='assets/fonts/font2.css' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="croppie.css">
+    <script src="croppie.js"></script>
+</head>
+<style>
+</style>
+
+<body>
+    <!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">
+                    <img src="assets/img/bc5d3605.logo.svg" id="logo" class="logo" />
+                </a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                   <!--Link Header-->
+                </ul>
+            </div>
+            <!--/.nav-collapse -->
+        </div>
+    </div>
+    <div id="headerwrap">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <span class="logoHeader">Create Lego Picture</span>
+                </div>
+                <div class="col-lg-12">
+                    <h2 style="border-bottom:1px solid #ccc; padding-bottom:20px;">Supported on browsers, such as chrome, firefox, IE, safari and opera</h2>
+                </div>
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+        <div class="container">
+
+            <!-- /row -->
+            <div class="row ">
+                <div class="col-lg-5 cropHeaderWrapper image-preview-area">
+                    <h4 class="text-center">Upload Image</h4>
+                    <div id="chooseafile">
+                        <span id="file-prompt"><strong>Choose an image</strong></span>
+                        <input type="file" id="upload-file">
+                    </div>
+
+                    <h4 class="text-center">Preview Image</h4>
+                    <hr>
+
+                    <div class="container1">
+                        <div id="demo">
+                            <!--<div class="mask"></div>
+                          <div class="thumbBox"></div>
+                          <div class="spinner" style="display: none">Loading...</div>-->
+                        </div>
+                        <div class="text-center control-icon mt20">
+                            <span id="rotateLeft" onclick="vanilla.rotate(-90);done()"><i class="fa fa-rotate-left control-icon"></i></span>
+                            <span id="rotateRight" onclick="vanilla.rotate(90);done()"><i class="fa fa-undo control-icon"></i></span>
+                            <span id="crop">Crop</span>
+                        </div>
+                    </div>
+
+                </div>
+                <img id="dummy" style="display: none" src="blue2048.jpg">
+                <img id="lego" style="display: none" src="lego-dot.png">
+                <img id="piximg" style="display: none">
+                <img id="rectimg" style="display: none">
+                <canvas id="subCanvas" width="384" height="384" style="display: none"></canvas>
+
+                <canvas id="fabriccanvas" style="display: none"></canvas>
+                <canvas style="display: none" id="resizeCanvas"></canvas>
+
+                <!-- /col-lg-6 -->
+                <div class="col-lg-5 image-control-area">
+                    <!--
+                    <div style="padding-left: 50px;">
+                        <h5>Brightness</h5>
+                        <input onchange="effectController()" step="1" id="brightnessRange" min="0" max="200" value="100" type="range">
+                        <h5>Contrast</h5>
+                        <input onchange="effectController()" step="1" id="contrastRange" min="0" max="200" value="100" type="range">
+                        <h5>Saturation</h5>
+                        <input onchange="effectController()" step="1" id="saturationRange" min="0" max="200" value="100" type="range">
+                    </div>-->
+                    <div id="cropresult">
+                        <canvas id="mainCanvas"></canvas>
+                    </div>
+
+                    <div class="text-center">
+                        <img id="dotimage" src="assets/img/lego-dot.png" style="opacity: 0;">
+                    </div>
+                    <div id="controls" class="row">
+                        <div class="col-lg-7">
+                            <input onchange="colorControl()" type="checkbox" id="colorcheck" name="check_lego"> <label for="colorcheck"> Use Only LEGO Brick Colors </label>
+                        </div>
+                        <div class="col-lg-5">
+                            <input onchange="greyControl()" type="checkbox" id="greycheck" name="grey_lego"> <label for="greycheck"> Use Grey Colors </label>
+                        </div>
+
+                        <div class="col-lg-12"><label>Size:</label></div>
+                        <div class="col-lg-12">
+                            <select id="blocksize" onchange="pixel()">
+                                <option>32</option>
+                                <option>64</option>
+                                <option>96</option>
+                                <option>128</option>
+                            </select>
+
+                            <select id="blocksize2" onchange="pixel()">
+                                <option>32</option>
+                                <option>64</option>
+                                <option>96</option>
+                                <option>128</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-12" style="margin-top: 15px;">
+                            <button onclick="csvCheck()" class="btn btn-info" id="exportcsv" name="exportcsv">Export CSV</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    </div><!-- /headerwrap -->
+    <div id="copyright row">
+        <div class="col-lg-10">
+            <p>Yasir Demircan 2017</p>
+        </div>
+    </div>
+    <!-- Bootstrap core JavaScript
+         ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <!--<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script> -->
+
+    </script>
+    <script src="assets/js/jquery-2.1.3.min.js"></script>
+
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>-->
+
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="fabric.min.js"></script>
+    <script>
+        function csvCheck() {
+            if (document.getElementById("greycheck").checked || document.getElementById("colorcheck").checked) {
+                createCSV();
+            } else {
+                alert("Please select only lego or grey colors to export CSV");
+            }
+
+        }
+
+        function colorControl() {
+            pixel();
+            if (document.getElementById("greycheck").checked) {
+                document.getElementById("greycheck").checked = false;
+                pixel();
+
+            }
+
+        }
+
+        function greyControl() {
+            pixel();
+            if (document.getElementById("colorcheck").checked) {
+                document.getElementById("colorcheck").checked = false;
+                pixel();
+
+            }
+        }
+
+    </script>
+    <script>
+        var subCheck = false;
+        var subimg;
+        var color_arr = [
+            [56, 95, 224, '#385FE0'],
+            [216, 53, 50, '#D83532'],
+            [252, 127, 57, '#FC7F39'],
+            [179, 204, 40, '#B3CC28'],
+            [114, 169, 246, '#72A9F6'],
+            [237, 208, 138, '#EDD08A'],
+            [59, 146, 75, '#3B924B'],
+            [75, 162, 255, '#4BA2FF'],
+            [254, 234, 35, '#FEEA23'],
+            [53, 65, 105, '#354169'],
+            [254, 223, 170, '#FEDFAA'],
+            [254, 237, 96, '#FEED60'],
+            [183, 58, 119, '#B73A77'],
+            [253, 192, 236, '#FDC0EC'],
+            [119, 71, 65, '#774741'],
+            [238, 204, 123, '#EECC7B'],
+            [174, 176, 172, '#AEB0AC'],
+            [251, 112, 197, '#FB70C5'],
+            [129, 53, 64, '#813540'],
+            [71, 75, 67, '#474B43'],
+            [97, 99, 103, '#616367'],
+            [250, 250, 250, '#FAFAFA'],
+            [49, 48, 55, '#313037'],
+            [80, 61, 153, '#503D99'],
+            [70, 71, 80, '#464750'],
+            [253, 232, 202, '#FDE8CA']
+        ];
+        var grey_arr = [
+            [174, 176, 172, '#AEB0AC'],
+            [71, 75, 67, '#474B43'],
+            [97, 99, 103, '#616367'],
+            [250, 250, 250, '#FAFAFA'],
+            [49, 48, 55, '#313037'],
+            [70, 71, 80, '#464750']
+        ];
+        //Declaring blocksize
+        function resize(bs) {
+            resizectx.clearRect(0, 0, resizecanvas.width, resizecanvas.height);
+            resizecanvas.width = bs;
+            resizecanvas.height = bs;
+            resizectx.drawImage(lego, 0, 0, bs, bs);
+        };
+        var blocksize;
+        var baseimg;
+        var lego;
+        var image;
+        var effectcanvas;
+
+        function declare() {
+
+            if (!subCheck) {
+
+                subimg = new Image();
+                subimg.src = document.getElementById("rectimg").src;
+                //effectController();
+                //Sample image problem
+                subCheck = true;
+            } else {
+                console.warn("Subimg Exists");
+            }
+
+            //Declaring images and effect canvas
+            baseimg = document.getElementById("rectimg"); //Baseimg as standard image
+            lego = document.getElementById("lego");
+            //Baseimg as fabric image
+            effectcanvas = new fabric.Canvas('fabriccanvas');
+            document.getElementsByClassName("canvas-container")[0].style.display = "none"
+            //Creating the Pixelization
+            setTimeout(function() {
+                pixel()
+            }, 0);
+        }
+        var pixfilter = new fabric.Image.filters.Pixelate({
+            blocksize: 32
+        });
+
+    </script>
+    <script>
+        // Variables about resize and main canvas
+        var maincanvas = document.getElementById("mainCanvas");
+        var resizecanvas = document.getElementById("resizeCanvas");
+        var subcanvas = document.getElementById("subCanvas");
+        var subctx = subcanvas.getContext("2d");
+        var mainctx = maincanvas.getContext("2d");
+        var resizectx = resizecanvas.getContext("2d");
+        var ratheight;
+        var ratwidth;
+
+
+        function render() {
+            var ratheight = document.getElementById("blocksize").value;
+            var ratwidth = document.getElementById("blocksize2").value;
+            var ratio;
+            image = new fabric.Image('rectimg');
+            if (Math.max(ratheight, ratwidth) == ratheight) {
+                console.log(ratheight)
+                ratio = ratwidth / ratheight;
+                maincanvas.width = baseimg.naturalWidth * ratio;
+                maincanvas.height = baseimg.naturalHeight;
+            } else {
+                ratio = ratheight / ratwidth;
+                maincanvas.width = baseimg.naturalWidth;
+                maincanvas.height = baseimg.naturalHeight * ratio;
+            }
+
+
+            mainctx.drawImage(piximg, 0, 0);
+            //Resizing function and pattern creating
+            resize((baseimg.naturalWidth) / (Math.max(ratwidth, ratheight)), lego, false);
+            var pat = mainctx.createPattern(resizecanvas, "repeat");
+            mainctx.rect(0, 0, baseimg.naturalWidth, baseimg.naturalHeight);
+            mainctx.fillStyle = pat;
+            mainctx.fill();
+            if (document.getElementById("colorcheck").checked) {
+                legoColors();
+            } else if (document.getElementById("greycheck").checked) {
+                greyColors();
+            } else if (document.getElementById("stdcheck").checked) {
+                console.log("Standard")
+            }
+
+        }
+
+
+        function pixel() {
+            ratheight = document.getElementById("blocksize").value;
+            ratwidth = document.getElementById("blocksize2").value;
+            effectcanvas.clear();
+            if (image) {
+                console.warn("We got the image");
+
+            } else {
+                console.error("We don't have it yet creating...");
+                image = new fabric.Image('rectimg');
+            }
+
+            blocksize = parseInt(document.getElementById("blocksize").value);
+            pixfilter.blocksize = Math.floor(parseInt(baseimg.naturalWidth) / Math.max(ratwidth, ratheight));
+            //Defining pixelated image element
+            var piximg = document.getElementById("piximg");
+            //Applying filter and rendering
+            effectcanvas.setWidth(baseimg.naturalWidth);
+            effectcanvas.setHeight(baseimg.naturalHeight);
+            image.filters.push(pixfilter);
+            image.applyFilters();
+            effectcanvas.add(image);
+            //Seting pixelated image source as data url
+            piximg.src = effectcanvas.toDataURL();
+            setTimeout(function() {
+                render();
+            }, 0);
+
+        }
+
+    </script>
+    <script>
+        var dummypic = false;
+        var vanilla;
+        var el;
+        var readres;
+
+        //croppie summonla
+        window.done = function() {
+            vanilla.result('blob').then(function(blob) {
+                var reader = new FileReader();
+                reader.readAsDataURL(blob);
+
+                reader.onloadend = function() {
+                    document.getElementById("rectimg").setAttribute("src", reader.result);
+
+                    //Drawing on subcanvas
+                    document.getElementById("rectimg").onload = function() {
+
+                        declare();
+                    }
+
+                }
+            });
+        }
+
+        el = document.getElementById('demo');
+        vanilla = new Croppie(el, {
+            viewport: {
+                width: 384,
+                height: 384
+            },
+            boundary: {
+                width: 400,
+                height: 400
+            },
+            showZoomer: false,
+            enableOrientation: true,
+            update: function() {
+                window.done();
+                console.log("updated");
+            }
+
+        });
+        vanilla.bind({
+            url: document.getElementById("dummy").src,
+            orientation: 1
+        });
+        document.getElementById("rectimg").setAttribute("src", document.getElementById("dummy").src);
+
+        //Drawing on subcanvas
+        document.getElementById("rectimg").onload = function() {
+
+            declare();
+        }
+
+        function initCropper() {
+
+            if (vanilla) {
+                vanilla.destroy();
+            }
+
+            var input = document.getElementById("upload-file");
+            fReader = new FileReader();
+
+            fReader.readAsDataURL(input.files[0]);
+            fReader.onloadend = function(event) {
+                el = document.getElementById('demo');
+                vanilla = new Croppie(el, {
+                    viewport: {
+                        width: 384,
+                        height: 384
+                    },
+                    boundary: {
+                        width: 400,
+                        height: 400
+                    },
+                    showZoomer: false,
+                    enableOrientation: true,
+                    update: function() {
+                        window.done();
+                        console.log("updated");
+                    }
+
+                });
+                vanilla.bind({
+                    url: event.target.result,
+                    orientation: 1
+                });
+                document.getElementById("cropbtn").onclick = window.done = function() {
+                    vanilla.result('blob').then(function(blob) {
+                        var reader = new FileReader();
+                        reader.readAsDataURL(blob);
+
+                        reader.onloadend = function() {
+                            document.getElementById("rectimg").setAttribute("src", reader.result);
+
+                            //Drawing on subcanvas
+                            document.getElementById("rectimg").onload = function() {
+
+                                declare();
+                            }
+
+                        }
+                    });
+                }
+            }
+
+
+
+        }
+        document.getElementById("upload-file").onchange = function() {
+            initCropper();
+            subCheck = false;
+            console.log("File uploaded");
+
+        }
+
+    </script>
+    <script>
+        function legoColors() {
+
+
+            var imgData = mainctx.getImageData(0, 0, 513, 513);
+            for (var i = 0; i < imgData.data.length; i += 4) {
+                r1 = imgData.data[i];
+                g1 = imgData.data[i + 1];
+                b1 = imgData.data[i + 2];
+                lessdiff = index = 0;
+                for (var j = 0; j < 26; j++) {
+                    r2 = color_arr[j][0] - r1;
+                    g2 = color_arr[j][1] - g1;
+                    b2 = color_arr[j][2] - b1;
+                    difference = Math.sqrt((r2 * r2) + (g2 * g2) + (b2 * b2));
+                    if (j == 0) {
+                        lessdiff = difference;
+                    }
+                    if (lessdiff > difference) {
+                        lessdiff = difference;
+                        index = j;
+                    }
+                }
+                imgData.data[i] = color_arr[index][0];
+                imgData.data[i + 1] = color_arr[index][1];
+                imgData.data[i + 2] = color_arr[index][2];
+                imgData.data[i + 3] = 255;
+            }
+            mainctx.putImageData(imgData, 0, 0);
+        }
+
+        function greyColors() {
+            var imgData = mainctx.getImageData(0, 0, 800, 800);
+            for (var i = 0; i < imgData.data.length; i += 4) {
+                r1 = imgData.data[i];
+                g1 = imgData.data[i + 1];
+                b1 = imgData.data[i + 2];
+                lessdiff = index = 0;
+                for (var j = 0; j < 6; j++) {
+                    r2 = grey_arr[j][0] - r1;
+                    g2 = grey_arr[j][1] - g1;
+                    b2 = grey_arr[j][2] - b1;
+                    difference = Math.sqrt((r2 * r2) + (g2 * g2) + (b2 * b2));
+                    if (j == 0) {
+                        lessdiff = difference;
+                    }
+                    if (lessdiff > difference) {
+                        lessdiff = difference;
+                        index = j;
+                    }
+                }
+                imgData.data[i] = grey_arr[index][0];
+                imgData.data[i + 1] = grey_arr[index][1];
+                imgData.data[i + 2] = grey_arr[index][2];
+                imgData.data[i + 3] = 255;
+            }
+            mainctx.putImageData(imgData, 0, 0);
+        }
+
+    </script>
+    <!--Effect Script for future <script>
+        var effectObj;
+
+        function effectController() {
+            effectObj = {
+                brightness: document.getElementById("brightnessRange").value,
+                contrast: document.getElementById("contrastRange").value,
+                saturation: document.getElementById("saturationRange").value
+            }
+
+
+            if (subimg) {
+                subctx.filter = "brightness(" + effectObj.brightness + "%)" + "contrast(" + effectObj.contrast + "%)" + "saturate(" + effectObj.saturation + "%)";
+                subctx.drawImage(subimg, 0, 0);
+                vanilla.bind({
+                    url: subcanvas.toDataURL()
+                });
+            } else {
+                //subimg = new Image();
+                //subimg.src = document.getElementById("rectimg").src;
+                subimg.onload = function() {
+                    subctx.filter = "brightness(" + parseInt(document.getElementById("brightnessRange").value) + "%)";
+                    subctx.drawImage(subimg, 0, 0);
+                    vanilla.bind({
+                        url: subcanvas.toDataURL()
+                    });
+
+                }
+
+            }
+
+
+        }
+
+    </script>-->
+    <script>
+        function createCSV() {
+            //Floor (bug on Mac)
+            var step = Math.ceil(parseInt(baseimg.naturalWidth) / Math.max(ratwidth, ratheight));
+            console.log(step);
+
+            let csvContent = "data:text/csv;charset=utf-8,";
+            csvContent += "R,G,B \r\n";
+            for (var width = 0; width < maincanvas.width; width += step) {
+                for (var height = 0; height < maincanvas.height; height += step) {
+                    var imgData = mainctx.getImageData(width, height, 1, 1);
+                    let row = imgData.data[0] + ',' + imgData.data[1] + ',' + imgData.data[2];
+                    csvContent += row + "\r\n";
+                }
+            }
+            var encodedUri = encodeURI(csvContent);
+            var link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "croppic.csv");
+            link.innerHTML = "";
+            document.body.appendChild(link);
+            link.click();
+        }
+
+    </script>
+</body>
+
+</html>
